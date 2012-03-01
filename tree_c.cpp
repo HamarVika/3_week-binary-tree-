@@ -1,6 +1,6 @@
 // tree.cpp : Defines the entry point for the console application.
-//З клавіатури вводиться послідовність англ.слів і їх перекладів укр мовою. З цих даних
-//сформувала двійкове дерево-словник.
+//Р— РєР»Р°РІС–Р°С‚СѓСЂРё РІРІРѕРґРёС‚СЊСЃСЏ РїРѕСЃР»С–РґРѕРІРЅС–СЃС‚СЊ Р°РЅРіР».СЃР»С–РІ С– С—С… РїРµСЂРµРєР»Р°РґС–РІ СѓРєСЂ РјРѕРІРѕСЋ. Р— С†РёС… РґР°РЅРёС…
+//СЃС„РѕСЂРјСѓРІР°Р»Р° РґРІС–Р№РєРѕРІРµ РґРµСЂРµРІРѕ-СЃР»РѕРІРЅРёРє.
 
 #include "stdafx.h"
 #include<stdio.h>
@@ -14,15 +14,15 @@ const int RightSubTree=1;
 const int TwoSubTree=2;
 const int MAX_LEN=200;
 struct words{
-	char *eng;		//слово-термін в ДП
-	char *ukr;		// переклад слова
+	char *eng;		//СЃР»РѕРІРѕ-С‚РµСЂРјС–РЅ РІ Р”Рџ
+	char *ukr;		// РїРµСЂРµРєР»Р°Рґ СЃР»РѕРІР°
 };
-struct tree_node{		//шаблон структури вузла дерева
-	words wrd;			// поле даних
-	tree_node *left, *right;		//вказівники на дочірні елементи
+struct tree_node{		//С€Р°Р±Р»РѕРЅ СЃС‚СЂСѓРєС‚СѓСЂРё РІСѓР·Р»Р° РґРµСЂРµРІР°
+	words wrd;			// РїРѕР»Рµ РґР°РЅРёС…
+	tree_node *left, *right;		//РІРєР°Р·С–РІРЅРёРєРё РЅР° РґРѕС‡С–СЂРЅС– РµР»РµРјРµРЅС‚Рё
 };
 
-tree_node *root;		//вказівник на корінь дерева
+tree_node *root;		//РІРєР°Р·С–РІРЅРёРє РЅР° РєРѕСЂС–РЅСЊ РґРµСЂРµРІР°
 int GetData(words *pwrd);
 tree_node* NewNode();
 void NewNode(tree_node *pnew, tree_node **root_addr);
@@ -34,65 +34,65 @@ void DeleteNode(char *term, tree_node** root_addr);
 void FreeNodeMemo(tree_node *proot);
 void FreeTree(tree_node *proot);
 void ShowLevels();				
-char* LenWords(int k, ...);			//функція зі змінною кількістю параметрів, виводить найдовше слово
+char* LenWords(int k, ...);			//С„СѓРЅРєС†С–СЏ Р·С– Р·РјС–РЅРЅРѕСЋ РєС–Р»СЊРєС–СЃС‚СЋ РїР°СЂР°РјРµС‚СЂС–РІ, РІРёРІРѕРґРёС‚СЊ РЅР°Р№РґРѕРІС€Рµ СЃР»РѕРІРѕ
 int _tmain(int argc, _TCHAR* argv[])
 {
 	tree_node *node;
 	char term[30];
 	cout<<"\tForming a tree. To complete the input press * \n";
-	while((node=NewNode())!=NULL)		//поки не кінець вводу
-		NewNode(node, &root);			//створюємо вузол і приєднуємо його до вже існуючих
+	while((node=NewNode())!=NULL)		//РїРѕРєРё РЅРµ РєС–РЅРµС†СЊ РІРІРѕРґСѓ
+		NewNode(node, &root);			//СЃС‚РІРѕСЂСЋС”РјРѕ РІСѓР·РѕР» С– РїСЂРёС”РґРЅСѓС”РјРѕ Р№РѕРіРѕ РґРѕ РІР¶Рµ С–СЃРЅСѓСЋС‡РёС…
 	cout<<"\t\nFormed tree: \n";
-	PrintTree(root);		//відображення дерева
-	cout<<"\nheight of the tree - "<<TreeHeight(root)<<", left subtree - "<<TreeHeight(root->left)		//виводимо висоту дерева
+	PrintTree(root);		//РІС–РґРѕР±СЂР°Р¶РµРЅРЅСЏ РґРµСЂРµРІР°
+	cout<<"\nheight of the tree - "<<TreeHeight(root)<<", left subtree - "<<TreeHeight(root->left)		//РІРёРІРѕРґРёРјРѕ РІРёСЃРѕС‚Сѓ РґРµСЂРµРІР°
 		<<", right subtree - "<<TreeHeight(root->right)<<endl;
 	cout<<"Structure of the tree: \n";
-	ShowTree(root);				//структура дерева(дерево-граф)
+	ShowTree(root);				//СЃС‚СЂСѓРєС‚СѓСЂР° РґРµСЂРµРІР°(РґРµСЂРµРІРѕ-РіСЂР°С„)
 	cout<<"\nSearch terms: \nTerm -> ";
-	while(*gets(term)!='*'){						//цикл пошуку; поки не кінець вводу
-		if((node=FindNode(term))!=NULL)			//якщо слово є в дереві
-			cout<<"\t Translate: "<<node->wrd.ukr;		//виводимо переклад
+	while(*gets(term)!='*'){						//С†РёРєР» РїРѕС€СѓРєСѓ; РїРѕРєРё РЅРµ РєС–РЅРµС†СЊ РІРІРѕРґСѓ
+		if((node=FindNode(term))!=NULL)			//СЏРєС‰Рѕ СЃР»РѕРІРѕ С” РІ РґРµСЂРµРІС–
+			cout<<"\t Translate: "<<node->wrd.ukr;		//РІРёРІРѕРґРёРјРѕ РїРµСЂРµРєР»Р°Рґ
 		else  cout<<"This term doesnt exist!";
 		cout<<"\nThe next term: ->";
 	}
 	cout<<"\nRemove the words:\nTerm ->";
-	while(*gets(term)!='*'){		//цикл видалення
+	while(*gets(term)!='*'){		//С†РёРєР» РІРёРґР°Р»РµРЅРЅСЏ
 		DeleteNode(term,&root);
 		cout<<"The next term ->";
 	}
 	cout<<"\n Tree Structure after removing ";
-	ShowTree(root);			//відображення зміненого дерева	
-	// використання функції зі змінною кількістю параметрів
-	//вона виводить найдовше слово з кореня і двох дочірніх вузлів
+	ShowTree(root);			//РІС–РґРѕР±СЂР°Р¶РµРЅРЅСЏ Р·РјС–РЅРµРЅРѕРіРѕ РґРµСЂРµРІР°	
+	// РІРёРєРѕСЂРёСЃС‚Р°РЅРЅСЏ С„СѓРЅРєС†С–С— Р·С– Р·РјС–РЅРЅРѕСЋ РєС–Р»СЊРєС–СЃС‚СЋ РїР°СЂР°РјРµС‚СЂС–РІ
+	//РІРѕРЅР° РІРёРІРѕРґРёС‚СЊ РЅР°Р№РґРѕРІС€Рµ СЃР»РѕРІРѕ Р· РєРѕСЂРµРЅСЏ С– РґРІРѕС… РґРѕС‡С–СЂРЅС–С… РІСѓР·Р»С–РІ
 	cout<<"\nThe longest word among root and 2 child nodes ->  ";
-	if(root!=NULL && root->left!=NULL && root->right!=NULL){		//якщо дочірні вузли існують
-		cout<<LenWords(3,root->wrd.eng, root->left->wrd.eng, root->right->wrd.eng);		//рахуємо довжину і виводимо найдовше 
+	if(root!=NULL && root->left!=NULL && root->right!=NULL){		//СЏРєС‰Рѕ РґРѕС‡С–СЂРЅС– РІСѓР·Р»Рё С–СЃРЅСѓСЋС‚СЊ
+		cout<<LenWords(3,root->wrd.eng, root->left->wrd.eng, root->right->wrd.eng);		//СЂР°С…СѓС”РјРѕ РґРѕРІР¶РёРЅСѓ С– РІРёРІРѕРґРёРјРѕ РЅР°Р№РґРѕРІС€Рµ 
 		cout<<"\nThe longest word among root and 2 child nodes  ->  ";
 		cout<<LenWords(2,root->left->wrd.eng, root->right->wrd.eng);
 	}
-	else cout<<"Not enought elements!";		//якщо дочірніх вузлів немає
+	else cout<<"Not enought elements!";		//СЏРєС‰Рѕ РґРѕС‡С–СЂРЅС–С… РІСѓР·Р»С–РІ РЅРµРјР°С”
 	FreeTree(root);
 	root=NULL;					
 	system("pause");		
 	return 0;
 }
 
-// функція введення слів-термінів і їх перекладів
+// С„СѓРЅРєС†С–СЏ РІРІРµРґРµРЅРЅСЏ СЃР»С–РІ-С‚РµСЂРјС–РЅС–РІ С– С—С… РїРµСЂРµРєР»Р°РґС–РІ
 int GetData(words *pwrd){
-	static int num=1;			//для підрахунку кількості слів
+	static int num=1;			//РґР»СЏ РїС–РґСЂР°С…СѓРЅРєСѓ РєС–Р»СЊРєРѕСЃС‚С– СЃР»С–РІ
 	char wbuf[150];
 	cout<<num++<<" term ->";
-	if(*gets(wbuf)=='*') return 0;  //ознака кінця введення
+	if(*gets(wbuf)=='*') return 0;  //РѕР·РЅР°РєР° РєС–РЅС†СЏ РІРІРµРґРµРЅРЅСЏ
 	pwrd->eng=new char[strlen(wbuf)+1];
-	strcpy(pwrd->eng, wbuf);	// запис слова-терміна в структуру
+	strcpy(pwrd->eng, wbuf);	// Р·Р°РїРёСЃ СЃР»РѕРІР°-С‚РµСЂРјС–РЅР° РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
 	cout<<"Translate ->";
-	gets(wbuf);			//отримуємо переклад
-	pwrd->ukr=new char[strlen(wbuf)+1];			//виділяємо на нього память
-	strcpy(pwrd->ukr, wbuf);			//і записуємо в структуру
+	gets(wbuf);			//РѕС‚СЂРёРјСѓС”РјРѕ РїРµСЂРµРєР»Р°Рґ
+	pwrd->ukr=new char[strlen(wbuf)+1];			//РІРёРґС–Р»СЏС”РјРѕ РЅР° РЅСЊРѕРіРѕ РїР°РјСЏС‚СЊ
+	strcpy(pwrd->ukr, wbuf);			//С– Р·Р°РїРёСЃСѓС”РјРѕ РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
 	return 1;
 }
-//  функція зі змінною кількістю параметрів
-	//вона виводить найдовше слово з кореня і двох дочірніх вузлів
+//  С„СѓРЅРєС†С–СЏ Р·С– Р·РјС–РЅРЅРѕСЋ РєС–Р»СЊРєС–СЃС‚СЋ РїР°СЂР°РјРµС‚СЂС–РІ
+	//РІРѕРЅР° РІРёРІРѕРґРёС‚СЊ РЅР°Р№РґРѕРІС€Рµ СЃР»РѕРІРѕ Р· РєРѕСЂРµРЅСЏ С– РґРІРѕС… РґРѕС‡С–СЂРЅС–С… РІСѓР·Р»С–РІ
 char* LenWords(int k, ...){
 	char *arg, *pm;
 	int len, max=0;
@@ -108,69 +108,69 @@ char* LenWords(int k, ...){
 	va_end(param);
 	return pm;
 }
-// функція звільнення ДП, зайнятої вузлом дерева
+// С„СѓРЅРєС†С–СЏ Р·РІС–Р»СЊРЅРµРЅРЅСЏ Р”Рџ, Р·Р°Р№РЅСЏС‚РѕС— РІСѓР·Р»РѕРј РґРµСЂРµРІР°
 void FreeNodeMemo(tree_node *pnode){
-	delete pnode->wrd.eng;		// витирання рядків у ДП
+	delete pnode->wrd.eng;		// РІРёС‚РёСЂР°РЅРЅСЏ СЂСЏРґРєС–РІ Сѓ Р”Рџ
 	delete pnode->wrd.ukr;
-	delete pnode;		//витирання вузла
+	delete pnode;		//РІРёС‚РёСЂР°РЅРЅСЏ РІСѓР·Р»Р°
 }
-//функція формування нового вузла дерева. Виділяє ДП для вузла і заносить туди адреси текстових рядків, 
-//введених через GetData.
+//С„СѓРЅРєС†С–СЏ С„РѕСЂРјСѓРІР°РЅРЅСЏ РЅРѕРІРѕРіРѕ РІСѓР·Р»Р° РґРµСЂРµРІР°. Р’РёРґС–Р»СЏС” Р”Рџ РґР»СЏ РІСѓР·Р»Р° С– Р·Р°РЅРѕСЃРёС‚СЊ С‚СѓРґРё Р°РґСЂРµСЃРё С‚РµРєСЃС‚РѕРІРёС… СЂСЏРґРєС–РІ, 
+//РІРІРµРґРµРЅРёС… С‡РµСЂРµР· GetData.
 tree_node* NewNode(){
 	tree_node* pel;
 	words buf;
-	int (*p) (words *);			//вказівник на функцію
+	int (*p) (words *);			//РІРєР°Р·С–РІРЅРёРє РЅР° С„СѓРЅРєС†С–СЋ
 	p=GetData;					//GetData
-	if(p(&buf)==0)		//кінець введення
+	if(p(&buf)==0)		//РєС–РЅРµС†СЊ РІРІРµРґРµРЅРЅСЏ
 		return 0;
-	pel=new tree_node [sizeof(tree_node)];			//виділяємо на вузол память
-	pel->wrd=buf;		//заповнення нового вузла
-	pel->left=pel->right=NULL;		//новий елемент стає листком
-	// Повертає адресу сформованого вузла
+	pel=new tree_node [sizeof(tree_node)];			//РІРёРґС–Р»СЏС”РјРѕ РЅР° РІСѓР·РѕР» РїР°РјСЏС‚СЊ
+	pel->wrd=buf;		//Р·Р°РїРѕРІРЅРµРЅРЅСЏ РЅРѕРІРѕРіРѕ РІСѓР·Р»Р°
+	pel->left=pel->right=NULL;		//РЅРѕРІРёР№ РµР»РµРјРµРЅС‚ СЃС‚Р°С” Р»РёСЃС‚РєРѕРј
+	// РџРѕРІРµСЂС‚Р°С” Р°РґСЂРµСЃСѓ СЃС„РѕСЂРјРѕРІР°РЅРѕРіРѕ РІСѓР·Р»Р°
 	return pel;
 }
 
-// функція приєднання нового вузла до впорядкованого дерева
+// С„СѓРЅРєС†С–СЏ РїСЂРёС”РґРЅР°РЅРЅСЏ РЅРѕРІРѕРіРѕ РІСѓР·Р»Р° РґРѕ РІРїРѕСЂСЏРґРєРѕРІР°РЅРѕРіРѕ РґРµСЂРµРІР°
 void NewNode(tree_node* pnew, tree_node** root_addr){
-	tree_node*proot=*root_addr;		//вказівник на корінь
+	tree_node*proot=*root_addr;		//РІРєР°Р·С–РІРЅРёРє РЅР° РєРѕСЂС–РЅСЊ
 	int cmp;
-	if(proot==NULL){		//дерево порожнє
-		*root_addr=pnew;		//новий елемент стає коренем дерева
+	if(proot==NULL){		//РґРµСЂРµРІРѕ РїРѕСЂРѕР¶РЅС”
+		*root_addr=pnew;		//РЅРѕРІРёР№ РµР»РµРјРµРЅС‚ СЃС‚Р°С” РєРѕСЂРµРЅРµРј РґРµСЂРµРІР°
 		return;
 	}
-	if(!(cmp=strcmp(proot->wrd.eng, pnew->wrd.eng)))		//слово вже є
-		FreeNodeMemo(pnew);		// звільнення ДП
+	if(!(cmp=strcmp(proot->wrd.eng, pnew->wrd.eng)))		//СЃР»РѕРІРѕ РІР¶Рµ С”
+		FreeNodeMemo(pnew);		// Р·РІС–Р»СЊРЅРµРЅРЅСЏ Р”Рџ
 	else 
 		if(cmp>0)
-			NewNode(pnew, &proot->left);		//ввести у ліве піддерево
-		else NewNode(pnew, &proot->right);		//ввести у праве піддерево
+			NewNode(pnew, &proot->left);		//РІРІРµСЃС‚Рё Сѓ Р»С–РІРµ РїС–РґРґРµСЂРµРІРѕ
+		else NewNode(pnew, &proot->right);		//РІРІРµСЃС‚Рё Сѓ РїСЂР°РІРµ РїС–РґРґРµСЂРµРІРѕ
 		
 }
 
-//функція виведення даних дерева в симетричному порядку
+//С„СѓРЅРєС†С–СЏ РІРёРІРµРґРµРЅРЅСЏ РґР°РЅРёС… РґРµСЂРµРІР° РІ СЃРёРјРµС‚СЂРёС‡РЅРѕРјСѓ РїРѕСЂСЏРґРєСѓ
 void PrintTree(tree_node* proot){
 	if(proot==NULL) return;
-	PrintTree(proot->left);		//виведення лівого піддерева
-	printf("%-15s - %s\n", proot->wrd.eng, proot->wrd.ukr);		//корінь
-	PrintTree(proot->right);		//виведення правого піддерева
+	PrintTree(proot->left);		//РІРёРІРµРґРµРЅРЅСЏ Р»С–РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
+	printf("%-15s - %s\n", proot->wrd.eng, proot->wrd.ukr);		//РєРѕСЂС–РЅСЊ
+	PrintTree(proot->right);		//РІРёРІРµРґРµРЅРЅСЏ РїСЂР°РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
 }
-// функція відображення структури дерева
+// С„СѓРЅРєС†С–СЏ РІС–РґРѕР±СЂР°Р¶РµРЅРЅСЏ СЃС‚СЂСѓРєС‚СѓСЂРё РґРµСЂРµРІР°
 void ShowTree(tree_node* proot, int lev){
-	if(lev==1) ShowLevels();		//виведення рядка розмітки рівнів
+	if(lev==1) ShowLevels();		//РІРёРІРµРґРµРЅРЅСЏ СЂСЏРґРєР° СЂРѕР·РјС–С‚РєРё СЂС–РІРЅС–РІ
 	if(proot==NULL) return;
-	ShowTree(proot->right, lev+1);        // відображення правого піддерева
-	printf("%*c%s\n", lev*8,' ',proot->wrd.eng);		//виведення кореня	
-	ShowTree(proot->left, lev+1);			// відображення лівого піддерева
+	ShowTree(proot->right, lev+1);        // РІС–РґРѕР±СЂР°Р¶РµРЅРЅСЏ РїСЂР°РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
+	printf("%*c%s\n", lev*8,' ',proot->wrd.eng);		//РІРёРІРµРґРµРЅРЅСЏ РєРѕСЂРµРЅСЏ	
+	ShowTree(proot->left, lev+1);			// РІС–РґРѕР±СЂР°Р¶РµРЅРЅСЏ Р»С–РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
 }
-// функція обчислення висоти дерева
+// С„СѓРЅРєС†С–СЏ РѕР±С‡РёСЃР»РµРЅРЅСЏ РІРёСЃРѕС‚Рё РґРµСЂРµРІР°
 int TreeHeight(tree_node *proot){
 	int lh, rh;
 	if(proot==NULL) return 0;
-	lh=TreeHeight(proot->left);			//висота лівого піддерева
-	rh=TreeHeight(proot->right);			//висота правого піддерева
-	return lh>rh?lh+1:rh+1;			//+1 враховує корінь
+	lh=TreeHeight(proot->left);			//РІРёСЃРѕС‚Р° Р»С–РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
+	rh=TreeHeight(proot->right);			//РІРёСЃРѕС‚Р° РїСЂР°РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
+	return lh>rh?lh+1:rh+1;			//+1 РІСЂР°С…РѕРІСѓС” РєРѕСЂС–РЅСЊ
 }
-// функція виведення рядка розмітки рівнів
+// С„СѓРЅРєС†С–СЏ РІРёРІРµРґРµРЅРЅСЏ СЂСЏРґРєР° СЂРѕР·РјС–С‚РєРё СЂС–РІРЅС–РІ
 void ShowLevels(){
 	int lvl;
 	cout<<"\nLevel: ";
@@ -179,67 +179,67 @@ void ShowLevels(){
 	printf("\n");
 }
 
-// функція пошуку заданого слова в бінарному дереві
+// С„СѓРЅРєС†С–СЏ РїРѕС€СѓРєСѓ Р·Р°РґР°РЅРѕРіРѕ СЃР»РѕРІР° РІ Р±С–РЅР°СЂРЅРѕРјСѓ РґРµСЂРµРІС–
 tree_node* FindNode(char* term){
 	tree_node* pnode=root;
 	int cmp;
-	while(pnode!=NULL){			// цикл пошуку слова
-		cmp=strcmp(pnode->wrd.eng, term);		//порівняння термінів
-		if(cmp==0) return pnode;		//слово знайдено
+	while(pnode!=NULL){			// С†РёРєР» РїРѕС€СѓРєСѓ СЃР»РѕРІР°
+		cmp=strcmp(pnode->wrd.eng, term);		//РїРѕСЂС–РІРЅСЏРЅРЅСЏ С‚РµСЂРјС–РЅС–РІ
+		if(cmp==0) return pnode;		//СЃР»РѕРІРѕ Р·РЅР°Р№РґРµРЅРѕ
 		else 
 			if(cmp>0)
-				pnode=pnode->left;			//пошук у лівому піддереві
+				pnode=pnode->left;			//РїРѕС€СѓРє Сѓ Р»С–РІРѕРјСѓ РїС–РґРґРµСЂРµРІС–
 			else
-				pnode=pnode->right;      //пошук у правому піддереві
+				pnode=pnode->right;      //РїРѕС€СѓРє Сѓ РїСЂР°РІРѕРјСѓ РїС–РґРґРµСЂРµРІС–
 	}
-	return NULL;		//слово не знайдено
+	return NULL;		//СЃР»РѕРІРѕ РЅРµ Р·РЅР°Р№РґРµРЅРѕ
 }
-// функція видалення вузла дерева, що містить задане слово
+// С„СѓРЅРєС†С–СЏ РІРёРґР°Р»РµРЅРЅСЏ РІСѓР·Р»Р° РґРµСЂРµРІР°, С‰Рѕ РјС–СЃС‚РёС‚СЊ Р·Р°РґР°РЅРµ СЃР»РѕРІРѕ
 
 void DeleteNode(char* term, tree_node **root_addr){
 	 tree_node *proot=*root_addr, *pnewr, *ppar;
 	 int cmp, subtr;
 	 if(proot==NULL) return;
-	 cmp=strcmp(proot->wrd.eng, term);	//порівняння термінів
-	 if (cmp==0){		//видалення кореневого елемента
-		 if(proot->left==NULL && proot->right==NULL)	//визначення
-			 subtr=NoSubTree;		//складу піддерев
+	 cmp=strcmp(proot->wrd.eng, term);	//РїРѕСЂС–РІРЅСЏРЅРЅСЏ С‚РµСЂРјС–РЅС–РІ
+	 if (cmp==0){		//РІРёРґР°Р»РµРЅРЅСЏ РєРѕСЂРµРЅРµРІРѕРіРѕ РµР»РµРјРµРЅС‚Р°
+		 if(proot->left==NULL && proot->right==NULL)	//РІРёР·РЅР°С‡РµРЅРЅСЏ
+			 subtr=NoSubTree;		//СЃРєР»Р°РґСѓ РїС–РґРґРµСЂРµРІ
 		 else   if (proot->left==NULL)
 				   subtr=RightSubTree;
 				else if (proot->right==NULL)
 						subtr=LeftSubTree;
 				else 
 					subtr=TwoSubTree;
-		switch(subtr) {			//перебудова дерева
-		case NoSubTree:  *root_addr=NULL; break;		//немає піддерев
-		case LeftSubTree:  *root_addr=proot->left; break;	//є тільки ліве піддерево
-		case RightSubTree:  *root_addr=proot->right; break;		//є тільки праве піддерево
-		case TwoSubTree:							//є обидва піддерева
-							pnewr=proot->left;		//pnewr новий корінь
-							ppar=proot;				//батьківський вузол pnewr
-			while(pnewr->right!=NULL){  //пошук вузла заміни
+		switch(subtr) {			//РїРµСЂРµР±СѓРґРѕРІР° РґРµСЂРµРІР°
+		case NoSubTree:  *root_addr=NULL; break;		//РЅРµРјР°С” РїС–РґРґРµСЂРµРІ
+		case LeftSubTree:  *root_addr=proot->left; break;	//С” С‚С–Р»СЊРєРё Р»С–РІРµ РїС–РґРґРµСЂРµРІРѕ
+		case RightSubTree:  *root_addr=proot->right; break;		//С” С‚С–Р»СЊРєРё РїСЂР°РІРµ РїС–РґРґРµСЂРµРІРѕ
+		case TwoSubTree:							//С” РѕР±РёРґРІР° РїС–РґРґРµСЂРµРІР°
+							pnewr=proot->left;		//pnewr РЅРѕРІРёР№ РєРѕСЂС–РЅСЊ
+							ppar=proot;				//Р±Р°С‚СЊРєС–РІСЃСЊРєРёР№ РІСѓР·РѕР» pnewr
+			while(pnewr->right!=NULL){  //РїРѕС€СѓРє РІСѓР·Р»Р° Р·Р°РјС–РЅРё
 				ppar=pnewr;		
 				pnewr=pnewr->right;
 			}
-			pnewr->right=proot->right;		//приєднання правого піддерева
+			pnewr->right=proot->right;		//РїСЂРёС”РґРЅР°РЅРЅСЏ РїСЂР°РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
 			if(ppar!=proot){
-				ppar->right=pnewr->left;		//перемикання звязків
-				pnewr->left=proot->left;		//у лівому піддереві
+				ppar->right=pnewr->left;		//РїРµСЂРµРјРёРєР°РЅРЅСЏ Р·РІСЏР·РєС–РІ
+				pnewr->left=proot->left;		//Сѓ Р»С–РІРѕРјСѓ РїС–РґРґРµСЂРµРІС–
 			}
-			*root_addr=pnewr;		// зміна кореня
+			*root_addr=pnewr;		// Р·РјС–РЅР° РєРѕСЂРµРЅСЏ
 		}
-		FreeNodeMemo(proot);		//витирання старого кореневого вузла
+		FreeNodeMemo(proot);		//РІРёС‚РёСЂР°РЅРЅСЏ СЃС‚Р°СЂРѕРіРѕ РєРѕСЂРµРЅРµРІРѕРіРѕ РІСѓР·Р»Р°
 		return;
 	 }
 	 if(cmp>0) 
-		 DeleteNode(term, &proot->left);	// видалення вузла в лівому піддереві
-	 else DeleteNode(term, &proot->right);  //видалення вузла в правому піддереві
+		 DeleteNode(term, &proot->left);	// РІРёРґР°Р»РµРЅРЅСЏ РІСѓР·Р»Р° РІ Р»С–РІРѕРјСѓ РїС–РґРґРµСЂРµРІС–
+	 else DeleteNode(term, &proot->right);  //РІРёРґР°Р»РµРЅРЅСЏ РІСѓР·Р»Р° РІ РїСЂР°РІРѕРјСѓ РїС–РґРґРµСЂРµРІС–
 }
-// функція повного витирання дерева
+// С„СѓРЅРєС†С–СЏ РїРѕРІРЅРѕРіРѕ РІРёС‚РёСЂР°РЅРЅСЏ РґРµСЂРµРІР°
 void FreeTree(tree_node *proot){
-	if(proot==NULL) return;		//дерево порожнє
-	FreeTree(proot->left);		//витирання лівого піддерева
-	FreeTree(proot->right);		//витирання правого піддерева
-	FreeNodeMemo(proot);		//видалення кореневого елемента
+	if(proot==NULL) return;		//РґРµСЂРµРІРѕ РїРѕСЂРѕР¶РЅС”
+	FreeTree(proot->left);		//РІРёС‚РёСЂР°РЅРЅСЏ Р»С–РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
+	FreeTree(proot->right);		//РІРёС‚РёСЂР°РЅРЅСЏ РїСЂР°РІРѕРіРѕ РїС–РґРґРµСЂРµРІР°
+	FreeNodeMemo(proot);		//РІРёРґР°Р»РµРЅРЅСЏ РєРѕСЂРµРЅРµРІРѕРіРѕ РµР»РµРјРµРЅС‚Р°
 }
 
